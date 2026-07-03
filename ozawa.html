@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>FullCalendar - ミニマルメモカレンダー</title>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #ffffff;
+        }
+
+        .calendar-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .calendar-title {
+            text-align: center;
+            color: #222;
+            font-size: 24px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .calendar-info-text {
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+        /* 枠線をきれいに復活させる設定 */
+        .fc {
+            --fc-border-color: #999 !important; 
+        }
+
+        /* 全体の枠線設定 */
+        .fc-theme-standard th, 
+        .fc-theme-standard td, 
+        .fc-theme-standard .fc-scrollgrid {
+            border: 1px solid var(--fc-border-color) !important;
+        }
+
+        .fc-col-header-cell {
+            padding: 12px 0 !important;
+            font-weight: bold;
+            color: #555;
+            background-color: #fcfcfc;
+        }
+
+        .fc-day-today {
+            background-color: transparent !important;
+        }
+
+        .fc-day-today .fc-daygrid-day-number {
+            background-color: #222;
+            color: #fff;
+            border-radius: 50%;
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            text-align: center;
+            line-height: 24px;
+        }
+
+        /* ★ マスの構造（テキストエリアを縦いっぱいに広げる修正） */
+        .fc-daygrid-day-frame {
+            min-height: 120px !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        /* ★ テキストボックスのラッパー（残りの高さをすべて使う設定） */
+        .custom-textarea-wrapper {
+            padding: 0 6px 6px 6px;
+            box-sizing: border-box;
+            width: 100%;
+            flex: 1 1 auto !important; /* 縦方向の余白を強制的に埋める */
+            display: flex !important;
+        }
+
+        /* ★ テキストエリア自体のサイズ設定 */
+        .cell-textarea {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+            resize: none !important;
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 60px !important; /* 最低限の入力高さを確保 */
+            box-sizing: border-box;
+            font-size: 30px;
+            padding: 4px 0;
+            color: #333;
+        }
+
+        .cell-textarea:focus {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+        }
+        
+        .fc-daygrid-event {
+            font-size: 11px;
+            padding: 1px 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calendar-container">
+        <h1 class="calendar-title">小澤先生　予定表
+            
+        </h1>
+        <div class="calendar-info-text">
+            小澤先生　予定表
+        </div>
+
+        <div id="calendar"></div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'ja',
+            
+            events: [
+                { title: '・10:00 会議', start: '2026-05-15' },
+                { title: '・ゴミ出し', start: '2026-05-20' }
+            ],
+            eventColor: 'transparent',
+            eventTextColor: '#ff4a4a',
+
+            dayCellDidMount: function(arg) {
+                // 時差に影響されない形式で YYYY-MM-DD を取得
+                var d = arg.date;
+                var dateStr = d.getFullYear() + '-' + 
+                              ('0' + (d.getMonth() + 1)).slice(-2) + '-' + 
+                              ('0' + d.getDate()).slice(-2);
+
+                var wrapper = document.createElement('div');
+                wrapper.className = 'custom-textarea-wrapper';
+
+                var textareaEl = document.createElement('textarea');
+                textareaEl.className = 'cell-textarea';
+                textareaEl.placeholder = ''; 
+                
+                // LocalStorageからデータを復元
+                var savedMemo = localStorage.getItem('memo_' + dateStr);
+                if (savedMemo) {
+                    textareaEl.value = savedMemo;
+                }
+                
+                // クリックイベントの干渉防止
+                textareaEl.addEventListener('click', function(e) { e.stopPropagation(); });
+                textareaEl.addEventListener('mousedown', function(e) { e.stopPropagation(); });
+                textareaEl.addEventListener('touchstart', function(e) { e.stopPropagation(); });
+
+                // 文字入力のたびに自動保存
+                textareaEl.addEventListener('input', function(e) {
+                    localStorage.setItem('memo_' + dateStr, e.target.value);
+                });
+
+                wrapper.appendChild(textareaEl);
+
+                var dayFrame = arg.el.querySelector('.fc-daygrid-day-frame');
+                if (dayFrame) {
+                    dayFrame.appendChild(wrapper);
+                }
+            }
+        });
+
+        calendar.render();
+    });
+    </script>
+    <a href="index.html" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #2c3e50;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 9999;
+    font-size: 0.75rem;
+    font-weight: bold;
+    transition: all 0.2s ease;
+" onmouseover="this.style.backgroundColor='#34495e'; this.style.transform='scale(1.1)';" onmouseout="this.style.backgroundColor='#2c3e50'; this.style.transform='scale(1.0)';">
+    <span style="font-size: 1.4rem; margin-bottom: -2px;">🏠</span>
+    <span>トップ</span>
+</a>
+</body>
+</html>
+
+
+
