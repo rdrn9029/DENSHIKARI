@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>先生の予定表 ポータルサイト</title>
+    <link rel="stylesheet" href="style.css"></link>
+</head>
+<style>
+        /* 全体の基本設定 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Segoe UI', sans-serif;
+        }
+        body {
+            background-color: #f4f7f6;
+            color: #333333;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 2rem;
+        }
+        .lead-text {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1rem;
+        }
+
+        /* 6人分のグリッドレイアウト */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        /* 先生のカードデザイン */
+        .teacher-link-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 30px 20px;
+            text-align: center;
+            text-decoration: none; /* 枠全体をリンクにする */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* マウスを乗せたときの動き */
+        .teacher-link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #3498db;
+        }
+
+        /* イニシャルアイコン */
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        /* 先生の名前 */
+        .name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        /* ボタン風の案内テキスト */
+        .go-btn {
+            display: inline-block;
+            background: #f8fafc;
+            color: #3498db;
+            border: 1px solid #3498db;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        .teacher-link-card:hover .go-btn {
+            background: #3498db;
+            color: #ffffff;
+        }
+
+        /* 6人のテーマカラー（アイコンの背景色） */
+        .ozawa .avatar     { background-color: #3182ce; } /* 青 */
+        .ono .avatar       { background-color: #38a169; } /* 緑 */
+        .fukui .avatar     { background-color: #805ad5; } /* 紫 */
+        .takeshima .avatar { background-color: #dd6b20; } /* オレンジ */
+        .hashimoto .avatar { background-color: #e53e3e; } /* 赤 */
+        .tashiro .avatar   { background-color: #319795; } /* ターコイズ */
+    </style>
+<body>
+
+    <div class="container">
+        <h1>📅 先生の予定表ポータル</h1>
+         <a href="TOP.html" class="btn">トップページへ</a>
+        <p class="lead-text">予定を確認したい先生を選択してください。</p>
+
+        <div class="portal-grid">
+
+            <a href="http://127.0.0.1:5500/ozawa.html" class="teacher-link-card ozawa">
+                <div class="avatar">小</div>
+                <div class="name">小澤 先生</div>
+                <div class="go-btn">予定表を見る</div>
+            </a>
+
+            <a href="http://127.0.0.1:5500/ono.html" class="teacher-link-card ono">
+                <div class="avatar">小</div>
+                <div class="name">小野 先生</div>
+                <div class="go-btn">予定表を見る</div>
+            </a>
+
+            <a href="http://127.0.0.1:5500/huku.html" class="teacher-link-card fukui">
+                <div class="avatar">福</div>
+                <div class="name">福井 先生</div>
+                <div class="go-btn">予定表を見る</div>
+            </a>
+
+            <a href="http://127.0.0.1:5500/take.html" class="teacher-link-card takeshima">
+                <div class="avatar">竹</div>
+                <div class="name">竹嶋 先生</div>
+                <div class="go-btn">予定表を見る</div>
+            </a>
+
+            <a href="http://127.0.0.1:5500/hashi.html" class="teacher-link-card hashimoto">
+                <div class="avatar">橋</div>
+                <div class="name">橋本 先生</div>
+                <div class="go-btn">予定表を見る</div>
+            </a>
+
+            <a href="http://127.0.0.1:5500/tashi.html" class="teacher-link-card tashiro">
+                <div class="avatar">田</div>
+                <div class="name">田代 先生</div>
+                <div class="go-btn">予定表を見る</div>
+            </a>
+
+        </div>
+    </div>
+
+</body>
+</html>
